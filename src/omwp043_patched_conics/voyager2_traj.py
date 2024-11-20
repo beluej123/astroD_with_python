@@ -12,18 +12,22 @@ from Voyager_2.m05016u.merged.bsp which can be found at:
 https://naif.jpl.nasa.gov/pub/naif/VOYAGER/kernels/spk/
 '''
 
-# AWP library
-from Spacecraft import Spacecraft as SC
-import spice_tools                as st
-import plotting_tools             as pt
-import planetary_data             as pd
-
 # Python standard libraries
+import sys  # needed to fix python importing issue
+
+sys.path.append('src/python_tools') # needed to fix python importing issue
 import os
+
+import planetary_data as pd
+import plotting_tools as pt
+import spice_tools as st
 
 # 3rd party libraries
 import spiceypy as spice
 from numpy import concatenate
+
+# AWP library
+from Spacecraft import Spacecraft as SC
 
 FRAME = 'ECLIPJ2000'
 
@@ -174,7 +178,7 @@ if __name__ == '__main__':
 	if False:
 		from sys import path
 		path.append( '/home/alfonso/AWP/python_tools' )
-		from OrbitalAnimator import animate_orbits, DummySC
+		from OrbitalAnimator import DummySC, animate_orbits
 
 		count = sc0.step
 		rs_1 = np.zeros( ( sc1.step + count, 3 ) )

@@ -5,18 +5,18 @@ https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
 
 Many orbits script
 '''
-
 # Python standard libraries
-from sys import path
-path.append( '../src/python_tools' )
+import sys
 
-# AWP libraries
-from Spacecraft import Spacecraft as SC
-from planetary_data import earth
-import plotting_tools as pt
+sys.path.append('src/python_tools') # needed to fix python importing issue
 
 # 3rd party libraries
 import numpy as np
+
+# AWP libraries
+import plotting_tools as pt
+from planetary_data import earth
+from Spacecraft import Spacecraft as SC
 
 aops   = np.arange( 0, 360, 90 )
 incs   = np.arange( 0, 90,  20 )

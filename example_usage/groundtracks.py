@@ -6,17 +6,21 @@ https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
 Propagate orbits with Spacecraft class and plot resulting
 groundtracks
 '''
+# Python standard libraries
+import sys
+
+sys.path.append('src/python_tools') # needed to fix python importing issue
+
+# AWP libraries
+import numerical_tools as nt
+import plotting_tools as pt
+import spice_data as sd
+import spiceypy as spice
 
 # 3rd party libraries
 from numpy import arange
-import spiceypy as spice
-
-# AWP libraries
-from Spacecraft import Spacecraft as SC
-import numerical_tools as nt
-import plotting_tools  as pt
-import spice_data      as sd
 from planetary_data import earth
+from Spacecraft import Spacecraft as SC
 
 if __name__ == '__main__':
 	spice.furnsh( sd.pck00010 )

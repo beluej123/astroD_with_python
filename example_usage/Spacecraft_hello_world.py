@@ -8,9 +8,13 @@ Two-body propagation with J2 perturbation for 100 periods
 '''
 
 # Python standard libraries
-# AWP libraries
-from Spacecraft import Spacecraft as SC
+import sys
+
+sys.path.append('src/python_tools') # needed to fix python importing issue
+
+# AWP libraries; sys.path() fixes the linting problem
 from planetary_data import earth
+from Spacecraft import Spacecraft as SC
 
 if __name__ == '__main__':
 	coes = [ earth[ 'radius' ] + 1000, 0.05, 30.0, 0.0, 0.0, 0.0 ]

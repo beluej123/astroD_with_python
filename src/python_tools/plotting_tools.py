@@ -5,11 +5,12 @@ https://github.com/alfonsogonzalez/AWP
 Plotting Tools Library
 '''
 
-from copy import copy
 import os
+from copy import copy
 
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+
 plt.style.use( 'dark_background' )
 
 import cities_lat_long
@@ -316,9 +317,9 @@ def plot_orbits( rs, args, vectors = [] ):
 					  azim = _args[ 'azimuth'   ] )
 	
 	if _args[ 'axes_no_fill' ]:
-		ax.w_xaxis.pane.fill = False
-		ax.w_yaxis.pane.fill = False
-		ax.w_zaxis.pane.fill = False		
+		ax.xaxis.pane.fill = False
+		ax.yaxis.pane.fill = False
+		ax.zaxis.pane.fill = False		
 
 	if _args[ 'hide_axes' ]:
 		ax.set_axis_off()
