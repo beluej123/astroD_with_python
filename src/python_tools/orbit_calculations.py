@@ -1,21 +1,29 @@
-'''
+"""
 AWP | Astrodynamics with Python by Alfonso Gonzalez
+Orbit Calculations Library
 https://github.com/alfonsogonzalez/AWP
 https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
 
-Orbit Calculations Library
-'''
+2024-11-20+ Jeff Belue edits/additions
+Note, for some code I want to prevent auto formatting (with vscode black),
+    so I use the "# fmt: off" and "# fmt: on" commands.
 
-# 3rd party libraries
-import numpy as np
+References:
+----------
+    See references.py for references list.
+"""
+
 import math
+import os
+
+import lamberts_tools as lt
+import numerical_tools as nt
+import numpy as np
+import planetary_data as pd
+import Spacecraft as SC
 import spiceypy as spice
 
-# AWP library
-import numerical_tools as nt
-import lamberts_tools  as lt
-import planetary_data  as pd
-
+# fmt: off
 ECLIPSE_MAP = {
 	'umbra'   : ( ( 1,  3 ), ( -1, -3 ) ),
 	'penumbra': ( ( 2, -1 ), (  1, -2 ) ),
@@ -296,3 +304,151 @@ def find_eclipses( ets, a, method = 'either', v = False, vv = False ):
 		print( '******** ECLIPSE SUMMARY END ********\n' )
 
 	return ecls
+
+
+# fmt: on
+def hohmann_transfer_scalars(r0, r1, altitude=True, cb=pd.earth):
+    """
+    Hohmann transfer considering only scalars; 2D, no inclination.
+    2024-11-20, Jeff Belue added from, Python 28,
+        https://www.youtube.com/watch?v=35eQ9FHom7o
+
+    Input Parameters:
+    ----------
+    r0       :
+    r1       :
+    altitude :
+    cb       : class, central body
+    """
+    # if passing in altituce; not passing in sma (semi-major axis)
+    if altitude:
+        # add central body radius to r
+        r0 += cb["radius"]
+        r1 += cb["radius"]
+    # calculate sma of transfer orbit
+    sma_transfer = (r0 + r1) / 2
+    # calculate circular orbit velocities
+    vel_cir_init = math.sqrt(cb["mu"] / r0)
+    vel_cir_final = math.sqrt(cb["mu"] / r1)
+
+    # calculate transfer orbit velocities (vis-viva)
+    vel0_transfer = math.sqrt(cb["mu"] * ((2 / r0) - (1 / sma_transfer)))
+    vel1_transfer = math.sqrt(cb["mu"] * ((2 / r1) - (1 / sma_transfer)))
+
+    # transfer time (half period)
+    t_transfer = math.pi * math.sqrt(sma_transfer**3 / cb["mu"])
+
+    # calculate delta-v scalar solutions
+    delta_vs = [abs(vel0_transfer - vel_cir_init), abs(vel_cir_final - vel1_transfer)]
+
+    return delta_vs, t_transfer
+
+
+def hohmann_transfer(
+    r0=0,
+    r1=0,
+    cb=pd.earth,
+    coes0=[],
+    coes1=[],
+    altitude=True,
+    propagate=False,
+    dt=100,
+    output_dir="",
+    names=["inititl", "final", "transfer"],
+    write_output=False,
+):
+    """
+    Hohmann transfer in 3D space.
+    2024-11-20, Jeff Belue added from, Python 28,
+        https://www.youtube.com/watch?v=35eQ9FHom7o
+
+    Input Parameters:
+    ----------
+    r0           :
+    r1           :
+    altitude     :
+    cb           : class, central body
+    coes0        : list
+    coes1        : list
+    altitude     : bool
+    propagate    : bool
+    dt           : float
+    output_dir   : str
+    names        : list
+    write_output : str
+
+    """
+    # check if coes passed in
+    if coes0:
+        # extract r0, r1
+        r0 = coes0[0]
+        r1 = coes1[0]
+    # if passing in altitude; not the sma (semi-major axis)
+    elif altitude:
+        # add central body radius to r
+        r0 += cb["radius"]
+        r1 += cb["radius"]
+
+    # calculate sma of transfer orbit
+    sma_transfer = (r0 + r1) / 2
+    # calculate circular orbit velocities
+    vel_cir_init = math.sqrt(cb["mu"] / r0)
+    vel_cir_final = math.sqrt(cb["mu"] / r1)
+
+    # calculate transfer orbit velocities (vis-viva)
+    vel0_transfer = math.sqrt(cb["mu"] * ((2 / r0) - (1 / sma_transfer)))
+    vel1_transfer = math.sqrt(cb["mu"] * ((2 / r1) - (1 / sma_transfer)))
+
+    # transfer time (half period)
+    t_transfer = math.pi * math.sqrt(sma_transfer**3 / cb["mu"])
+
+    # calculate delta-v scalar solutions
+    delta_vs = [abs(vel0_transfer - vel_cir_init), abs(vel_cir_final - vel1_transfer)]
+
+    # propagate orbits
+    if propagate == True:
+        # if coes not passed in
+        if not coes0:
+            # create coes lists
+            coes0 = [r0, 0.0, 0.0, 0.0, 0.0, 0.0]
+            coes1 = [r1, 0.0, 0.0, 0.0, 0.0, 0.0]
+        # calculate eccenctricity of transfer orbit
+        ecc_transfer = 1 - (r0 / sma_transfer)
+        # coes for transfer orbit
+        coes_transfer = [sma_transfer, ecc_transfer, coes0[2], 0.0, coes0[4], coes0[5]]
+
+        # calculate initial & final orbit periods
+        T0 = 2 * math.pi * ((r0**3) / cb["mu"]) ** 0.5
+        T1 = 2 * math.pi * ((r1**3) / cb["mu"]) ** 0.5
+
+        # create spacecraft instances and propagate orbits
+        sc_config = {
+			'coes'       : coes0,
+			'tspan'      : T0, 
+			'dt'         : 100.0,
+			'output_dir' : os.path.join(output_dir)
+			}
+        sc0 = SC.Spacecraft(sc_config)
+        # sc0 = SC.Spacecraft(
+        #     coes0, T0, dt, coes=True, output_dir=os.path.join(output_dir, names[0])
+        # )
+        # sc1 = SC.Spacecraft(
+        #     coes1, T1, dt, coes=True, output_dir=os.path.join(output_dir, names[1])
+        # )
+        # sc_transfer = SC.Spacecraft(
+        #     coes_transfer,
+        #     t_transfer,
+        #     dt,
+        #     coes=True,
+        #     output_dir=os.path.join(output_dir, names[1]),
+        # )
+        
+        # just a tempory removal, below
+        # write output files
+        # if write_output:
+        #     sc0.write_traj()
+        #     sc1.write_traj()
+        #     sc_transfer.write_traj()
+        # return sc0, sc1, sc_transfer, delta_vs
+
+    return delta_vs, t_transfer

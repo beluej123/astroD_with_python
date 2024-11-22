@@ -4,25 +4,34 @@ https://github.com/alfonsogonzalez/AWP
 https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
 
 Spacecraft class definition
+
+References:
+----------
+    See references.py for references list.
 '''
+
+import math as m
 
 # Python standard libraries
 import os
-import math as m
+
+import matplotlib.pyplot as plt
+import numpy as np
+import spiceypy as spice
 
 # 3rd party libraries
 from scipy.integrate import solve_ivp
-import spiceypy          as spice
-import numpy             as np
-import matplotlib.pyplot as plt
+
 plt.style.use( 'dark_background' )
+
+import numerical_tools as nt
 
 # AWP libraries
 import orbit_calculations as oc
-import numerical_tools    as nt
-import plotting_tools     as pt
-import planetary_data     as pd
-import spice_data         as sd
+import planetary_data as pd
+import plotting_tools as pt
+import spice_data as sd
+
 
 def null_config():
 	return {
