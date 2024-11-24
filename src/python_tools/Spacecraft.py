@@ -1,28 +1,31 @@
-'''
+"""
 AWP | Astrodynamics with Python by Alfonso Gonzalez
+Spacecraft class definitions.
+
 https://github.com/alfonsogonzalez/AWP
 https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
+class descriptions, https://www.youtube.com/watch?v=yMJ_VU3jt7c
 
-Spacecraft class definition
+2024-11-20+ Jeff Belue edits/additions
+Note: for select code, to prevent auto formatting (using vscode black),
+    use the "# fmt: off" and "# fmt: on" commands.
 
 References:
 ----------
     See references.py for references list.
-'''
+"""
 
 import math as m
 
-# Python standard libraries
+# Libraries
 import os
 
 import matplotlib.pyplot as plt
 import numpy as np
 import spiceypy as spice
-
-# 3rd party libraries
 from scipy.integrate import solve_ivp
 
-plt.style.use( 'dark_background' )
+plt.style.use("dark_background")
 
 import numerical_tools as nt
 
@@ -33,15 +36,17 @@ import plotting_tools as pt
 import spice_data as sd
 
 
+# fmt: off
+# default configuration parameters
 def null_config():
 	return {
-		'cb'             : pd.earth,
-		'date0'          : '2021-04-01',
-		'et0'            : None,
+		'cb'             : pd.earth, # central body
+		'date0'          : '2021-04-01', # starting date
+		'et0'            : None, # ephemeris time since frame
 		'frame'          : 'J2000',
-		'orbit_state'    : [],
-		'coes'           : [],
-		'orbit_perts'    : {},
+		'orbit_state'    : [], # r_vec, v_vec; or coes
+		'coes'           : [], # classic orbital elements
+		'orbit_perts'    : {}, # orbit pertibations
 		'propagator'     : 'LSODA',
 		'atol'           : 1e-6,
 		'rtol'           : 1e-6,
@@ -54,8 +59,10 @@ def null_config():
 	}
 
 class Spacecraft:
+    # class descriptions, https://www.youtube.com/watch?v=yMJ_VU3jt7c
 
 	def __init__( self, config ):
+        # load default configuration
 		self.config = null_config()
 		for key in config.keys():
 			self.config[ key ] = config[ key ]
@@ -63,14 +70,17 @@ class Spacecraft:
 		self.orbit_perts = self.config[ 'orbit_perts' ]
 		self.cb          = self.config[ 'cb' ]
 
+        # if coes passed in, convert to r_vec, v_vec
 		if self.config[ 'coes' ]:
 			self.config[ 'orbit_state' ] = oc.coes2state( self.config[ 'coes' ],
 				mu = self.config[ 'cb' ][ 'mu' ] )
-
+        
+        # if tspan = string, calc number of periods, float meast calc seconds
 		if type( self.config[ 'tspan' ] ) == str:
 			self.config[ 'tspan' ] = float( self.config[ 'tspan'] ) *\
 				oc.state2period( self.config[ 'orbit_state' ], self.cb[ 'mu' ] )
 
+        # states include r_vec, v_vec,  sc mass for low thrust missions
 		self.state0       = np.zeros( 7 )
 		self.state0[ :6 ] = self.config[ 'orbit_state' ]
 		self.state0[  6 ] = self.config[ 'mass0' ]
@@ -143,6 +153,7 @@ class Spacecraft:
 		if self.config[ 'et0' ] is not None:
 			self.et0 = self.config[ 'et0' ]
 		else:
+            # string to ephemeris time
 			self.et0 = spice.str2et( self.config[ 'date0' ] )
 
 	def check_min_alt( self, et, state ):
@@ -190,14 +201,17 @@ class Spacecraft:
 			 / r2 ** 2 * np.array( [ tx, ty, tz ] )
 
 	def diffy_q( self, et, state ):
+        # note, state includes sc mass
 		rx, ry, rz, vx, vy, vz, mass = state
 		r         = np.array( [ rx, ry, rz ] )
 		mass_dot  = 0.0
 		state_dot = np.zeros( 7 )
-		et       += self.et0
+		et       += self.et0 # ephemeris time
 
+        # 2-body acceleration
 		a = -r * self.cb[ 'mu' ] / nt.norm( r ) ** 3
 
+        # reminder, et=ephemeris time
 		for pert in self.orbit_perts_funcs:
 			a += pert( et, state )
 
@@ -243,6 +257,7 @@ class Spacecraft:
 		if not self.coes_calculated:
 			self.calc_coes()
 
+        # vector method of, apoapsis = sma * (1 + eccentricity)
 		self.apoapses  = self.coes[ :, 0 ] * ( 1 + self.coes[ :, 1 ] )
 		self.periapses = self.coes[ :, 0 ] * ( 1 - self.coes[ :, 1 ] )
 

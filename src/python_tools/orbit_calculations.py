@@ -5,8 +5,8 @@ https://github.com/alfonsogonzalez/AWP
 https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
 
 2024-11-20+ Jeff Belue edits/additions
-Note, for some code I want to prevent auto formatting (with vscode black),
-    so I use the "# fmt: off" and "# fmt: on" commands.
+Note: for select code, to prevent auto formatting (using vscode black),
+    use the "# fmt: off" and "# fmt: on" commands.
 
 References:
 ----------
@@ -359,7 +359,7 @@ def hohmann_transfer(
 ):
     """
     Hohmann transfer in 3D space.
-    2024-11-20, Jeff Belue added from, Python 28,
+    2024-11-20, Jeff Belue added from, Alfonso Gonzalez Python 28:
         https://www.youtube.com/watch?v=35eQ9FHom7o
 
     Input Parameters:
@@ -389,7 +389,7 @@ def hohmann_transfer(
         r0 += cb["radius"]
         r1 += cb["radius"]
 
-    # calculate sma of transfer orbit
+    # calculate sma (aka a) of transfer orbit
     sma_transfer = (r0 + r1) / 2
     # calculate circular orbit velocities
     vel_cir_init = math.sqrt(cb["mu"] / r0)
@@ -422,13 +422,28 @@ def hohmann_transfer(
         T1 = 2 * math.pi * ((r1**3) / cb["mu"]) ** 0.5
 
         # create spacecraft instances and propagate orbits
-        sc_config = {
-			'coes'       : coes0,
-			'tspan'      : T0, 
-			'dt'         : 100.0,
-			'output_dir' : os.path.join(output_dir)
-			}
-        sc0 = SC.Spacecraft(sc_config)
+        sc_config0 = {
+            "coes": coes0,
+            "tspan": T0,
+            "dt": 100.0,
+            "output_dir": os.path.join(output_dir, names[0]),
+        }
+        sc_config1 = {
+            "coes": coes1,
+            "tspan": T1,
+            "dt": 100.0,
+            "output_dir": os.path.join(output_dir,names[1]),
+        }
+        sc_config_t = {
+            "coes": coes_transfer,
+            "tspan": t_transfer,
+            "dt": 100.0,
+            "output_dir": os.path.join(output_dir, names[1]),
+        }
+        sc0 = SC.Spacecraft(sc_config0)
+        sc1 = SC.Spacecraft(sc_config1)
+        sc_transfer=SC.Spacecraft(sc_config_t)
+        
         # sc0 = SC.Spacecraft(
         #     coes0, T0, dt, coes=True, output_dir=os.path.join(output_dir, names[0])
         # )
@@ -442,13 +457,13 @@ def hohmann_transfer(
         #     coes=True,
         #     output_dir=os.path.join(output_dir, names[1]),
         # )
-        
+
         # just a tempory removal, below
         # write output files
         # if write_output:
         #     sc0.write_traj()
         #     sc1.write_traj()
         #     sc_transfer.write_traj()
-        # return sc0, sc1, sc_transfer, delta_vs
+        return sc0, sc1, sc_transfer, delta_vs
 
     return delta_vs, t_transfer

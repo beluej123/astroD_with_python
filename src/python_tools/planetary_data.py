@@ -1,9 +1,9 @@
 '''
 AWP | Astrodynamics with Python by Alfonso Gonzalez
+Planetary Data Library.
+
 https://github.com/alfonsogonzalez/AWP
 https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
-
-Planetary Data Library
 '''
 
 # gravitational constant
