@@ -1,10 +1,17 @@
 '''
 Print Symbolic Euler Angle Rotation Matrix
+3D plotting function description, https://www.youtube.com/watch?v=h7hBrRhImSE
+https://github.com/alfonsogonzalez/AWP
+
+Note: for select code, to prevent auto formatting (using vscode black),
+    use the "# fmt: off" and "# fmt: on" commands.
 '''
 
 # built-in Python library
 from sys import path
-path.append( '/home/alfonso/AWP/python_tools' )
+
+# path.append( '/home/alfonso/AWP/python_tools' )
+path.append("src/python_tools")  # needed to fix python importing issue
 
 # personal libraries
 import plotting_tools as pt
@@ -16,6 +23,7 @@ d2r = 3.14159 / 180.0
 fn  = 'frames.png'
 
 if __name__ == '__main__':
+    # fmt: off
 
 	raan   =  30.0  * d2r
 	inc    =  63.4  * d2r

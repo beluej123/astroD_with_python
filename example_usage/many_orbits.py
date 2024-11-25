@@ -45,5 +45,5 @@ if __name__ == '__main__':
 	pt.plot_orbits( rs,
 		{
 		'traj_lws': 1,
-		'show'    : True
+		'show'    : True,
 		} )

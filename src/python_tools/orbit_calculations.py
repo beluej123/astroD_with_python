@@ -409,7 +409,8 @@ def hohmann_transfer(
     if propagate == True:
         # if coes not passed in
         if not coes0:
-            # create coes lists
+            # create coes lists, (classical orbital elements)
+            #   coes: rx, ecc, incl [deg], TA [deg], argP [deg], raan [deg]
             coes0 = [r0, 0.0, 0.0, 0.0, 0.0, 0.0]
             coes1 = [r1, 0.0, 0.0, 0.0, 0.0, 0.0]
         # calculate eccenctricity of transfer orbit
@@ -423,9 +424,9 @@ def hohmann_transfer(
 
         # create spacecraft instances and propagate orbits
         sc_config0 = {
-            "coes": coes0,
-            "tspan": T0,
-            "dt": 100.0,
+            "coes": coes0, # sc initial condition
+            "tspan": T0,   # str= no. of periods; or float=seconds
+            "dt": 100.0,   # time steps in seconds
             "output_dir": os.path.join(output_dir, names[0]),
         }
         sc_config1 = {
@@ -438,7 +439,7 @@ def hohmann_transfer(
             "coes": coes_transfer,
             "tspan": t_transfer,
             "dt": 100.0,
-            "output_dir": os.path.join(output_dir, names[1]),
+            "output_dir": os.path.join(output_dir, names[2]),
         }
         sc0 = SC.Spacecraft(sc_config0)
         sc1 = SC.Spacecraft(sc_config1)

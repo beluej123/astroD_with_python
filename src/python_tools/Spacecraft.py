@@ -21,21 +21,16 @@ import math as m
 import os
 
 import matplotlib.pyplot as plt
-import numpy as np
-import spiceypy as spice
-from scipy.integrate import solve_ivp
-
-plt.style.use("dark_background")
-
 import numerical_tools as nt
-
-# AWP libraries
+import numpy as np
 import orbit_calculations as oc
 import planetary_data as pd
 import plotting_tools as pt
 import spice_data as sd
+import spiceypy as spice
+from scipy.integrate import solve_ivp
 
-
+plt.style.use("dark_background")
 # fmt: off
 # default configuration parameters
 def null_config():

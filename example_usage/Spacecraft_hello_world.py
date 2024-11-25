@@ -23,8 +23,8 @@ if __name__ == "__main__":
     # pass in a dictionary defining calculations type
     sc = SC(
         {
-            "coes"       : coes,  # sc initial condition
-            "tspan"      : "100",  # str= no. of periods; or #=seconds
+            "coes"       : coes,   # sc initial condition
+            "tspan"      : "100",  # str= no. of periods; or float=seconds
             "dt"         : 100.0,  # time steps in seconds
             "orbit_perts": {"J2": True},  # orbit pertabations added
             "propagate"  : True
