@@ -1,6 +1,6 @@
 """
 AWP | Astrodynamics with Python inspired by Alfonso Gonzalez
-Hohmann transfer.
+Hohmann transfer with 3D plots.
 https://github.com/alfonsogonzalez/AWP
 https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
 Hohmann: Python 36 & Python 28
@@ -57,7 +57,6 @@ def test_hohmann_1():
         f"transfer time:\t{t_transfer_scalar:.5g} [s], {t_transfer_scalar/3600:.5g} [hr]"
     )
 
-    # **** troubleshooting, below **********
     sc0, sc1, sc_transfer, delta_vs = oc.hohmann_transfer(
         coes0=coes0, coes1=coes1, propagate=True
     )

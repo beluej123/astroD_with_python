@@ -4,6 +4,72 @@ Planetary Data Library.
 
 https://github.com/alfonsogonzalez/AWP
 https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
+
+Orbital Elements Naming Collection:
+Start with Kepler coe (classic orbital elements).
+    https://ssd.jpl.nasa.gov/planets/approx_pos.html
+    Horizons web-ephemeris, https://ssd.jpl.nasa.gov/horizons/app.html#/
+
+    o_type : int  , [-] orbit type (python dictionary list)
+                    0:"circular", 1:"circular inclined", 2:"circular equatorial"
+                    3:"elliptical", 4:"elliptical equatorial"
+                    5:"parabolic", 6:"parabolic equatorial"
+                    7:"hyperbolic", 8:"hyperbolic equatorial"
+    sp     : float, [km or au] semi-parameter (aka p)
+    sma    : float, [km or au] semi-major axis (aka a)
+    ecc    : float, [--] eccentricity
+    incl   : float, [rad] inclination
+    raan   : float, [rad] right ascension of ascending node,
+                    also called Longitude of Ascending Node (Omega, or capital W)
+    w_     : float, [rad] argument of periapsis (aka aop, or arg_p)
+    TA     : float, [rad] true angle/anomaly (aka t_anom, or theta)
+
+    alternative coe's including circular & equatorial:
+    Lt0    : float, [rad] true longitude at epoch, circular equatorial
+                    Position on the ecliptic, accounting for its inclination.
+                    when incl=0, ecc=0
+    w_bar  : float, [rad] longitude of periapsis (aka II), equatorial
+                NOTE ** NOT argument of periapsis, w_ ??????????????????? **
+                Note, w_bar = w_ + raan, measured in 2 planes (Vallado [4] p.1015)
+    u_     : float, [rad] argument of lattitude (aka ), circular inclined
+
+    Other orbital elements:
+        w_p    : float [rad] longitude of periapsis (aka w_bar) ??
+        L_     : float, [deg] mean longitude
+                    NOT mean anomaly, M
+                    L_ = w_bar + M
+        wt_bar : float, [rad] true longitude of periapsis
+                    measured in one plane
+        M_     : mean anomaly, often replaces TA
+        t_peri : float, [jd] time of periapsis passage
+
+    circular, e=0: w_ and TA = undefined;
+        use argument of latitude, u_; u_=acos((n_vec X r_vec)/(n_mag * r_mag))
+        If r_vec[2] < 0 then 180 < u < 360 degree
+
+    equatorial, i=0 or 180 [deg]: raan and w_ = undefined
+        use longitude of periapsis, II (aka w_bar); II=acos(e_vec[0]/e_mag)
+        If e_vec[1] < 0 then 180 < II < 360 degree
+
+    circular & equatorial, e=0 and i=0 or i=180: w_ and raan and TA = undefined;
+        use true longitude, Lt0 = angle between r0 & I-axis; Lt0=acos(r_vec[1]/r_mag)
+        If r_mag[1] < 0 then 180 < Lt0 < 360 degree
+
+From JPL Horizizons, osculating elements:
+    Symbol & meaning [1 au= 149597870.700 km, 1 day= 86400.0 s]:
+    JDTDB  Julian Day Number, Barycentric Dynamical Time
+    EC     Eccentricity, e
+    QR     Periapsis distance, q (au)
+    IN     Inclination w.r.t X-Y plane, i (degrees)
+    OM     Longitude of Ascending Node, OMEGA, (degrees)
+    W      Argument of Perifocus, w (degrees)
+    Tp     Time of periapsis (Julian Day Number)
+    N      Mean motion, n (degrees/day)
+    MA     Mean anomaly, M (degrees)
+    TA     True anomaly, nu (degrees)
+    A      Semi-major axis, a (au)
+    AD     Apoapsis distance (au)
+    PR     Sidereal orbit period (day)
 '''
 
 # gravitational constant
