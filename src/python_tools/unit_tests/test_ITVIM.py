@@ -13,16 +13,13 @@ Note: for select code, to prevent auto formatting (using vscode black),
 import sys  # needed to fix python importing issue
 
 sys.path.append("src/python_tools")  # needed to fix python importing issue
+# libraries
 import numerical_tools as nt
 import numpy as np
 import planetary_data as pd
-
-# 3rd party libraries
 import pytest
 import spice_data as sd
 import spiceypy as spice
-
-# AWP library
 from ITVIM import ITVIM
 
 # Treat all warnings as errors

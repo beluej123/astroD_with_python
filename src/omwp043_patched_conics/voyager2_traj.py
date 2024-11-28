@@ -113,6 +113,7 @@ if __name__ == "__main__":
 	Now model the spacecraft as a Jovicentric hyperbolic orbit
 	and propagate until exit Jupiter SOI
 	"""
+    stop_conditions = {"max_alt": pd.jupiter["SOI"] - pd.jupiter["radius"]}
     sc2 = SC(
         {
             "orbit_state"    : state2,
@@ -120,7 +121,8 @@ if __name__ == "__main__":
             "frame"          : frame,
             "tspan"          : 200 * 24 * 3600.0,
             "dt"             : 20000,
-            "stop_conditions": {"exit_SOI": True},
+            "stop_conditions": stop_conditions,
+            # "stop_conditions": {"exit_SOI": True},
             "cb"             : pd.jupiter,
         }
     )
@@ -131,8 +133,7 @@ if __name__ == "__main__":
 	"""
     state_jupiter = spice.spkgeo(5, sc2.ets[-1], frame, 0)[0]
     state3        = sc2.states[-1, :6] + state_jupiter
-    print(f"state3= {state3}")
-    exit() # debugging tool; i cannot get vscode degugger to work as I need!
+    
     
     """
 	Now model the spacecraft as a heliocentric elliptical orbit
@@ -156,8 +157,8 @@ if __name__ == "__main__":
     ets = concatenate((sc0.ets, sc1.ets, sc2.ets, sc3.ets))
 
     states_earth   = st.calc_ephemeris(399, ets, frame, 0)[:, :3]
-    states_jupiter = st.calc_ephemeris(5, ets, frame, 0)[:, :3]
-    states_saturn  = st.calc_ephemeris(6, ets, frame, 0)[:, :3]
+    states_jupiter = st.calc_ephemeris(5,   ets, frame, 0)[:, :3]
+    states_saturn  = st.calc_ephemeris(6,   ets, frame, 0)[:, :3]
     labels = [
         "Earth-Centered",
         "Heliocentric",
@@ -168,6 +169,9 @@ if __name__ == "__main__":
         "Saturn",
     ]
     colors = ["m", "c", "m", "c", "b", "C3", "C1"]
+
+    print(f"state3= {states_saturn}")
+    exit() # debugging tool; i cannot get vscode degugger to work as I need!
 
     # ensure all states are heliocentric
     rs0 = sc0.states[:, :3] + states_earth[: sc0.step]

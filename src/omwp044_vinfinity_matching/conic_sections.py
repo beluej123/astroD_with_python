@@ -1,6 +1,8 @@
 """
 AWP | Astrodynamics with Python by Alfonso Gonzalez
 Plot the conic sections; circle, ellipse, parabola, hyperbola.
+https://www.youtube.com/watch?v=rNpnzNKQrNg&list=PLOIRBaljOV8gn074rWFWYP1dCr2dJqWab
+
 
 https://github.com/alfonsogonzalez/AWP
 https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
