@@ -1,6 +1,6 @@
 """
 AWP | Astrodynamics with Python by Alfonso Gonzalez
-Orbit Calculations Library
+Orbit Calculations Library.
 https://github.com/alfonsogonzalez/AWP
 https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
 

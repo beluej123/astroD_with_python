@@ -1,23 +1,25 @@
 '''
 AWP | Astrodynamics with Python by Alfonso Gonzalez
+Introduction to Keplerian Orbital Elements.
+    Create orbit SPICE BSP kernel comparing two plots of the argument of periapsis.
+    Fundamentals of Orbital Mechanics 5
+    https://www.youtube.com/watch?v=lToogNnaN_g
 https://github.com/alfonsogonzalez/AWP
 https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
 
-Fundamentals of Orbital Mechanics 5
-Introduction to Keplerian Orbital Elements
-
-Create orbit SPICE BSP kernel for two plots comparing
-argument of periapsis
+Note: for select code, to prevent auto formatting (using vscode black),
+    use the "# fmt: off" and "# fmt: on" commands.
 '''
+# Python libraries
+import sys  # needed to fix python importing issue
 
-# 3rd party libraries
-import spiceypy as spice
+sys.path.append("src/python_tools")  # needed to fix python importing issue
 
-# AWP library
-import numerical_tools    as nt
+import numerical_tools as nt
 import orbit_calculations as oc
-import plotting_tools     as pt
-import spice_data         as sd
+import plotting_tools as pt
+import spice_data as sd
+import spiceypy as spice
 
 if __name__ == '__main__':
 	spice.furnsh( sd.leapseconds_kernel )

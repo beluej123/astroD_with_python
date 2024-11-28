@@ -1,23 +1,22 @@
 '''
 AWP | Astrodynamics with Python by Alfonso Gonzalez
+Create 2 near polar orbits comparing right ascension of the ascending node (RAAN).
+    Introduction to Keplerian Orbital Elements.
+    Fundamentals of Orbital Mechanics 5.
+
 https://github.com/alfonsogonzalez/AWP
 https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
 
-Fundamentals of Orbital Mechanics 5
-Introduction to Keplerian Orbital Elements
-
-Create 2 near polar orbits to compare
-right ascension of the ascending node (RAAN)
 '''
+# Python libraries
+import sys  # needed to fix python importing issue
 
-# 3rd party libraries
-import spiceypy as spice
-
-# AWP library
-import numerical_tools    as nt
+sys.path.append("src/python_tools")  # needed to fix python importing issue
+import numerical_tools as nt
 import orbit_calculations as oc
-import plotting_tools     as pt
-import spice_data         as sd
+import plotting_tools as pt
+import spice_data as sd
+import spiceypy as spice
 
 if __name__ == '__main__':
 	spice.furnsh( sd.leapseconds_kernel )
@@ -65,7 +64,7 @@ if __name__ == '__main__':
 	part of the code, so don't try this at home!
 	'''
 	if False:
-		import spice_tools  as st
+		import spice_tools as st
 		spice.furnsh( sd.leapseconds_kernel )
 
 

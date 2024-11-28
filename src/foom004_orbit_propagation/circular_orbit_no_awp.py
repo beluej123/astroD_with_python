@@ -1,17 +1,18 @@
 '''
 AWP | Astrodynamics with Python by Alfonso Gonzalez
+Circular orbit propagation with no AWP dependencies.
+    Orbital propagation.
+    Fundamentals of Orbital Mechanics 4.
 https://github.com/alfonsogonzalez/AWP
 https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
 
-Fundamentals of Orbital Mechanics 4
-Orbital propagation
-
-Circular orbit propagation with no AWP dependencies
 '''
+
+import matplotlib.pyplot as plt
 
 # 3rd party libraries
 import numpy as np
-import matplotlib.pyplot as plt
+
 plt.style.use( 'dark_background' )
 
 earth_radius = 6378.0 # km
@@ -39,6 +40,7 @@ def rk4_step( f, t, y, h ):
 	return y + h / 6.0 * ( k1 + 2 * k2 + 2 * k3 + k4 )
 
 def plot_orbits( rs, args ):
+    # initial plot arguements, maybe over-written with function call
 	_args = {
 		'figsize'      : ( 10, 8 ),
 		'labels'       : [ '' ] * len( rs ),
@@ -127,9 +129,12 @@ def plot_orbits( rs, args ):
 					  azim = _args[ 'azimuth'   ] )
 	
 	if _args[ 'axes_no_fill' ]:
-		ax.w_xaxis.pane.fill = False
-		ax.w_yaxis.pane.fill = False
-		ax.w_zaxis.pane.fill = False		
+		# ax.w_xaxis.pane.fill = False
+		# ax.w_yaxis.pane.fill = False
+		# ax.w_zaxis.pane.fill = False		
+		ax.xaxis.pane.fill = False
+		ax.yaxis.pane.fill = False
+		ax.zaxis.pane.fill = False		
 
 	if _args[ 'hide_axes' ]:
 		ax.set_axis_off()

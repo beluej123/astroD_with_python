@@ -1,17 +1,15 @@
 """
 AWP | Astrodynamics with Python by Alfonso Gonzalez
 Acceleration, Velocity and Position subplots script.
-
-Fundamentals of Orbital Mechanics 2.
-Ordinary Differential Equations (ODEs) Solvers.
+    Fundamentals of Orbital Mechanics 2.
+    Ordinary Differential Equations (ODEs) Solvers.
 https://www.youtube.com/watch?v=8-SyHZb7w40&list=PLOIRBaljOV8hBJS4m6brpmUrncqkyXBjB&index=2
 
 https://github.com/alfonsogonzalez/AWP
 https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
 
 
-For circular orbit
-Try changing out the orbital parameters!
+For circular orbit try changing out the orbital parameters!
 """
 
 import sys

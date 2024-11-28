@@ -1,25 +1,31 @@
 '''
 AWP | Astrodynamics with Python by Alfonso Gonzalez
+Introduction to Keplerian Orbital Elements.
+    Fundamentals of Orbital Mechanics 5
+    Create equatorial, elliptical orbit SPICE BSP kernel
+        and true anomaly vs time plot
+
 https://github.com/alfonsogonzalez/AWP
 https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
 
-Fundamentals of Orbital Mechanics 5
-Introduction to Keplerian Orbital Elements
-
-Create equatorial, elliptical orbit SPICE BSP kernel
-and true anomaly vs time plot
+Note: for select code, to prevent auto formatting (using vscode black),
+    use the "# fmt: off" and "# fmt: on" commands.
 '''
+# Python libraries
+import sys  # needed to fix python importing issue
+
+sys.path.append("src/python_tools")  # needed to fix python importing issue
+import matplotlib.pyplot as plt
 
 # 3rd party library
-import numpy             as np
-import matplotlib.pyplot as plt
+import numpy as np
+
 plt.style.use( 'dark_background' )
 
 # AWP library
-import numerical_tools    as nt
+import numerical_tools as nt
 import orbit_calculations as oc
-import plotting_tools     as pt
-
+import plotting_tools as pt
 
 if __name__ == '__main__':
 	state0 = [ 7500.0, 0, 0, 0, 9.0, 0 ]	
@@ -56,9 +62,9 @@ if __name__ == '__main__':
 	part of the code.
 	'''
 	if False:
-		import spiceypy     as spice
-		import spice_data   as sd
-		import spice_tools  as st
+		import spice_data as sd
+		import spice_tools as st
+		import spiceypy as spice
 		spice.furnsh( sd.leapseconds_kernel )
 
 		ets += spice.str2et( '2021-12-26' )

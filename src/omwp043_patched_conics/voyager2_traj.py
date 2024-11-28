@@ -1,27 +1,27 @@
 """
 AWP | Astrodynamics with Python by Alfonso Gonzalez
+Patched Conics Propagation and Spacecraft Propagation Stop Conditions.
+    Retrieve Voyager 2 initial state, patched conics propagation.
+    Orbital Mechanics with Python 43
+    
 https://github.com/alfonsogonzalez/AWP
 https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
 
-Orbital Mechanics with Python 43
-Patched Conics Propagation and Spacecraft Propagation Stop Conditions
-
-Voyager 2 patched conics propagation
-Voyager 2 initial state vector retrieved
 from Voyager_2.m05016u.merged.bsp which can be found at:
-https://naif.jpl.nasa.gov/pub/naif/VOYAGER/kernels/spk/
+    https://naif.jpl.nasa.gov/pub/naif/VOYAGER/kernels/spk/
 
 Note: run this script from the top project directory to get correct paths.
     Or you can change the paths to fit your needs.
+
 Note: for select code, to prevent auto formatting (using vscode black),
     use the "# fmt: off" and "# fmt: on" commands.
 
 Horizons web-ephemeris, https://ssd.jpl.nasa.gov/horizons/app.html#/
-        Earth: Ecliptic: Solar System Barycenter
-        2443376.147594699 = A.D. 1977-Aug-20 15:32:32.1820 TDB 
-        X = 1.284144508572808E+08 Y =-8.128705432252860E+07 Z =-1.253680534372479E+04
-        VX= 1.539202448857433E+01 VY= 2.510752773341791E+01 VZ=-1.147795727494128E-04
-        LT= 5.069500111576398E+02 RG= 1.519797899280763E+08 RR=-4.234681274407071E-01
+    Earth: Ecliptic: Solar System Barycenter
+    2443376.147594699 = A.D. 1977-Aug-20 15:32:32.1820 TDB 
+    X = 1.284144508572808E+08 Y =-8.128705432252860E+07 Z =-1.253680534372479E+04
+    VX= 1.539202448857433E+01 VY= 2.510752773341791E+01 VZ=-1.147795727494128E-04
+    LT= 5.069500111576398E+02 RG= 1.519797899280763E+08 RR=-4.234681274407071E-01
 """
 
 # Python libraries
@@ -41,12 +41,11 @@ frame = "ECLIPJ2000"
 # fmt: off
 if __name__ == "__main__":
     """
-    If you set an environment variable named 'AWP' to be the absolute path
-    to the base directory of this repository, you will be able to load all
-    SPICE kernels from any directory. If not, you must run this script from
-    the src/ directory
-    For example, I used the following command to set the AWP variable:
-    $ export AWP=/home/alfonso/pub/AWP
+    To load SPICE kernels from any directory, set the os environment path.
+        The original code author set an environment variable named 'AWP' to be
+        the absolute path to the SPICE kernels from any directory.  Otherwise
+        run this script from the src/ directory.
+        For example: AWP=/home/alfonso/pub/AWP
     """
     AWP_path = os.environ.get("AWP")
     if AWP_path is not None:
@@ -124,7 +123,6 @@ if __name__ == "__main__":
             "tspan"          : 200 * 24 * 3600.0,
             "dt"             : 20000,
             "stop_conditions": stop_conditions,
-            # "stop_conditions": {"exit_SOI": True},
             "cb"             : pd.jupiter,
         }
     )
@@ -135,7 +133,6 @@ if __name__ == "__main__":
 	"""
     state_jupiter = spice.spkgeo(5, sc2.ets[-1], frame, 0)[0]
     state3        = sc2.states[-1, :6] + state_jupiter
-    
     
     """
 	Now model the spacecraft as a heliocentric elliptical orbit
@@ -172,14 +169,15 @@ if __name__ == "__main__":
     ]
     colors = ["m", "c", "m", "c", "b", "C3", "C1"]
 
-    print(f"states_saturn= {states_saturn}")
-    exit() # debugging tool; i cannot get vscode degugger to work as I need!
+    # print(f"states_saturn= {states_saturn}") # debug cmd
+    # print(f"sc0.__dict__)= {sc0.__dict__}") # debug cmd
+    # exit() # debugging tool; i cannot get vscode degugger to work as I need!
 
     # ensure all states are heliocentric
-    rs0 = sc0.states[:, :3] + states_earth[: sc0.step]
+    rs0 = sc0.states[:, :3] + states_earth[: sc0.n_steps]
     rs1 = sc1.states[:, :3]
-    c0  = sc0.step + sc1.step
-    c1  = c0 + sc2.step
+    c0  = sc0.n_steps + sc1.n_steps
+    c1  = c0 + sc2.n_steps
     rs2 = sc2.states[:, :3] + states_jupiter[c0:c1]
     rs3 = sc3.states[:, :3]
 
