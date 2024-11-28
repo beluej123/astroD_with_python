@@ -10,9 +10,9 @@ https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
 3Blue1Brown's Summer of Math Exposition video entry; Orbital Mechanics with Python 44
 
 *********** NOTE ************
-To run this script, you need to run it from this directory so that the
-    paths to the SPICE kernels are correct. Or you can change the paths
-    to fit your needs
+Run this script from the top project directory to get correct paths.
+    Or you can change the paths to fit your needs.
+    
 Note: for select code, to prevent auto formatting (using vscode black),
     use the "# fmt: off" and "# fmt: on" commands.
 """

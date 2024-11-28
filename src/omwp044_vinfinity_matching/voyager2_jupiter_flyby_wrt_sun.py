@@ -10,10 +10,11 @@ https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
 and Orbital Mechanics with Python 44
 
 *********** NOTE ************
-If you'd like to run this script, you must
-run it from this directory so that the path to the
-Voyager 2 SPICE kernel is correct. Or you can change the path
-to fit your needs
+Run this script from the top project directory to get correct paths.
+    Or you can change the paths to fit your needs.
+
+Note: for select code, to prevent auto formatting (using vscode black),
+    use the "# fmt: off" and "# fmt: on" commands.
 """
 import sys  # needed to fix python importing issue
 
@@ -27,8 +28,9 @@ import spiceypy as spice
 from numerical_tools import norm
 
 if __name__ == "__main__":
+    # fmt: off
     spice.furnsh(sd.leapseconds_kernel)
-    spice.furnsh("voyager2_jupiter_flyby.bsp")
+    spice.furnsh("src/omwp044_vinfinity_matching/voyager2_jupiter_flyby.bsp")
 
     et        = spice.str2et("1979-07-09 TDB")
     dt        = 20 * 24 * 3600.0

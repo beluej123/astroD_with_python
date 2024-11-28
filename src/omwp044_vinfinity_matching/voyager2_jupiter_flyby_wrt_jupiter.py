@@ -10,9 +10,8 @@ https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
     Orbital Mechanics with Python 44.
 
 *********** NOTE ************
-If you'd like to run this script, you need run it from this directory
-    so that the path to the Voyager 2 SPICE kernel is correct.
-    Or you can change the path to fit your needs.
+Run this script from the top project directory to get correct paths.
+    Or you can change the paths to fit your needs.
 
 Note: for select code, to prevent auto formatting (using vscode black),
     use the "# fmt: off" and "# fmt: on" commands.

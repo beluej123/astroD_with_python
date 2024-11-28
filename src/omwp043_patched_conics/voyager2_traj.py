@@ -11,6 +11,8 @@ Voyager 2 initial state vector retrieved
 from Voyager_2.m05016u.merged.bsp which can be found at:
 https://naif.jpl.nasa.gov/pub/naif/VOYAGER/kernels/spk/
 
+Note: run this script from the top project directory to get correct paths.
+    Or you can change the paths to fit your needs.
 Note: for select code, to prevent auto formatting (using vscode black),
     use the "# fmt: off" and "# fmt: on" commands.
 
@@ -170,7 +172,7 @@ if __name__ == "__main__":
     ]
     colors = ["m", "c", "m", "c", "b", "C3", "C1"]
 
-    print(f"state3= {states_saturn}")
+    print(f"states_saturn= {states_saturn}")
     exit() # debugging tool; i cannot get vscode degugger to work as I need!
 
     # ensure all states are heliocentric
