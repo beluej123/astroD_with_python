@@ -84,13 +84,13 @@ if __name__ == "__main__":
     )
     """
 	Calculate spacecraft state w.r.t solar system barycenter
-	at ephemeris time when spacecraft left Earth SOI
+	    at ephemeris time when spacecraft left Earth SOI.
 	"""
     state_earth = spice.spkgeo(399, sc0.ets[-1], frame, 0)[0]
     state1      = sc0.states[-1, :6] + state_earth
     """
 	Now model the spacecraft as a heliocentric elliptical orbit
-	and propagate until enter Jupiter SOI
+	    and propagate until enter Jupiter SOI.
 	"""
     sc1 = SC(
         {
@@ -106,13 +106,13 @@ if __name__ == "__main__":
 
     """
 	Calculate spacecraft state w.r.t Jupiter
-	at ephemeris time when spacecraft reaches Jupiter SOI
+	    at ephemeris time when spacecraft reaches Jupiter SOI.
 	"""
     state_jupiter = spice.spkgeo(5, sc1.ets[-1], frame, 0)[0]
     state2        = sc1.states[-1, :6] - state_jupiter
     """
 	Now model the spacecraft as a Jovicentric hyperbolic orbit
-	and propagate until exit Jupiter SOI
+	    and propagate until exit Jupiter SOI.
 	"""
     stop_conditions = {"max_alt": pd.jupiter["SOI"] - pd.jupiter["radius"]}
     sc2 = SC(
@@ -129,14 +129,14 @@ if __name__ == "__main__":
 
     """
 	Calculate spacecraft state w.r.t solar system barycenter
-	at ephemeris time when spacecraft left Jupiter SOI
+	    at ephemeris time when spacecraft left Jupiter SOI.
 	"""
     state_jupiter = spice.spkgeo(5, sc2.ets[-1], frame, 0)[0]
     state3        = sc2.states[-1, :6] + state_jupiter
     
     """
 	Now model the spacecraft as a heliocentric elliptical orbit
-	and propagate until enter Saturn SOI
+	    and propagate until enter Saturn SOI.
 	"""
     sc3 = SC(
         {

@@ -4,6 +4,9 @@ Two-body propagation with J2 perturbation for 100 periods.
 
 https://github.com/alfonsogonzalez/AWP
 https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
+
+Note: for select code, to prevent auto formatting (using vscode black),
+    use the "# fmt: off" and "# fmt: on" commands.
 """
 
 import sys
@@ -19,21 +22,22 @@ if __name__ == "__main__":
     # coes= classic orbital elements
     #   orbit radius, eccentricity, inclination, true anomaly,
     coes = [earth["radius"] + 1000, 0.05, 30.0, 0.0, 0.0, 0.0]
-
+    # fmt: off
     # pass in a dictionary defining calculations type
     sc = SC(
         {
-            "coes"       : coes,   # sc initial condition
-            "tspan"      : "100",  # str= no. of periods; or float=seconds
-            "dt"         : 100.0,  # time steps in seconds
-            "orbit_perts": {"J2": True},  # orbit pertabations added
-            "propagate"  : True
+            "coes"        : coes,  # sc initial condition
+            "tspan"       : "100",  # str= no. of periods; or float=seconds
+            "dt"          : 100.0,  # time steps in seconds
+            "orbit_perts" : {"J2": True},  # orbit pertabations added
+            "propagate"   : True,
         }
     )
+    # fmt: on
     # a use-case to wait to propagate; in sc instance set 'propagate: False'
     #   then run seperate sc.propagate(), shown below
     # sc.propagate_orbit()
-    
+
     # plots will show up in seperate "windows"
     sc.plot_3d({"show": True})
     sc.plot_coes()

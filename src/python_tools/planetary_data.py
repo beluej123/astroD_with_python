@@ -34,14 +34,14 @@ Start with Kepler coe (classic orbital elements).
     u_     : float, [rad] argument of lattitude (aka ), circular inclined
 
     Other orbital elements:
-        w_p    : float [rad] longitude of periapsis (aka w_bar) ??
-        L_     : float, [deg] mean longitude
-                    NOT mean anomaly, M
-                    L_ = w_bar + M
-        wt_bar : float, [rad] true longitude of periapsis
-                    measured in one plane
-        M_     : mean anomaly, often replaces TA
-        t_peri : float, [jd] time of periapsis passage
+    w_p    : float [rad] longitude of periapsis (aka w_bar) ??
+    L_     : float, [deg] mean longitude
+                NOT mean anomaly, M
+                L_ = w_bar + M
+    wt_bar : float, [rad] true longitude of periapsis
+                measured in one plane
+    M_     : mean anomaly, often replaces TA
+    t_peri : float, [jd] time of periapsis passage
 
     circular, e=0: w_ and TA = undefined;
         use argument of latitude, u_; u_=acos((n_vec X r_vec)/(n_mag * r_mag))
